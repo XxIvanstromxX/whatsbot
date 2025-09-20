@@ -1,0 +1,30 @@
+{
+  "name": "whatsbots",
+  "version": "1.0.0",
+  "description": "Este repositorio contiene el material y código del curso de creación de chatbots con Inteligencia Artificial para WhatsApp, utilizando Evolution API. El curso está diseñado para CCOL y se desarrolla a lo largo de 6 clases prácticas.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XxIvanstromxX/whatsbot.git"
+  },
+  "keywords": [],
+  "author": "Ivan Martinez",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/XxIvanstromxX/whatsbot/issues"
+  },
+  "homepage": "https://github.com/XxIvanstromxX/whatsbot#readme",
+  "dependencies": {
+    "axios": "1.12.2",
+    "express": "5.1.0"
+  },
+  "devDependencies": {
+    "dotenv": "17.2.2",
+    "morgan": "1.10.1"
+  }
+}
