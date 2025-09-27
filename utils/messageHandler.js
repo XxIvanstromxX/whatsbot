@@ -5,6 +5,39 @@ import { chatAI } from "./geminiResponse.js";
 dotenv.config();
 const { AUTHENTICATION_API_KEY } = process.env;
 
+const URL = "http://localhost:8080/message/sendText/ivanTest";
+
+const sendMenssage = async (number, text) => {
+  try {
+    await axios.post(
+      URL,
+      {
+        number: number,
+        text: text,
+      },
+      {
+        headers: { apiKey: AUTHENTICATION_API_KEY },
+      }
+    );
+  } catch (e) {
+    console.log("Error enviando mensaje", e.message);
+  }
+};
+
+const commandsLogic = {
+  "/help": (userType) =>
+    userType === "admin"
+      ? "Comandos Admin: /help, /info, /usuarios"
+      : "Comandos disponibles: /help, /info",
+  "/info": () =>
+    "Este es un bot de ejemplo que responde a comandos y mensajes.",
+};
+
+const getUserType = (number) => {
+  const adminNumbers = ["521563435924@s.whatsapp.net"];
+  return adminNumbers.includes(number) ? "admin" : "user";
+};
+
 export const message = async (req, res) => {
   try {
     const evento = req.body;
@@ -20,22 +53,19 @@ export const message = async (req, res) => {
       return res.status(400).json({ error: "Datos incompletos" });
     }
 
-    const aiResponse = await chatAI(message);
+    const userType = getUserType(number); //Tipo de usuario basado en el numero
 
-    if (!aiResponse) {
-      return res.status(500).json({ error: "Error en IA" });
+    let responseText;
+    if (commandsLogic[message]) {
+      responseText = commandsLogic[message](userType);
+    } else {
+      responseText = await chatAI(message, userType);
+      if (!responseText) {
+        responseText = "Lo siento, no pude procesar tu mensaje";
+      }
     }
 
-    await axios.post(
-      "http://localhost:8080/message/sendText/ivanTest",
-      {
-        number: number,
-        text: aiResponse,
-      },
-      {
-        headers: { apiKey: AUTHENTICATION_API_KEY },
-      }
-    );
+    await sendMenssage(number, responseText);
 
     return res.status(200).json({ status: "Mensaje enviado" });
   } catch (err) {
