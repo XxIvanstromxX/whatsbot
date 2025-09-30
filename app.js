@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import { message } from "./utils/messageHandler.js";
+import { message } from "./controllers/messageController.js";
 
 dotenv.config();
 
