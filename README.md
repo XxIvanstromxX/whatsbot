@@ -17,15 +17,16 @@ El curso se divide en **6 clases** donde iremos construyendo el proyecto de form
 
 - **Clase 1**: Configuración inicial y fundamentos
 - **Clase 2**: Implementación de webhook y manejo de mensajes duplicados
-- **Clase 3**: [Contenido por definir]
-- **Clase 4**: [Contenido por definir]
-- **Clase 5**: [Contenido por definir]
+- **Clase 3**: Integración con Google Gemini AI y arquitectura modular
+- **Clase 4**: Sistema de comandos avanzado y tipos de usuario
+- **Clase 5**: Modos de conversación y envío de medios
 - **Clase 6**: [Contenido por definir]
 
 ## 🛠️ Tecnologías Utilizadas
 
 - **Evolution API** - Para la integración con WhatsApp
 - **Node.js & Express** - Servidor backend para manejar webhooks
+- **Google Gemini AI** - Inteligencia artificial para respuestas inteligentes
 - **Axios** - Cliente HTTP para comunicación con APIs
 - **Morgan** - Middleware para logging de peticiones HTTP
 - **dotenv** - Gestión de variables de entorno
@@ -61,6 +62,8 @@ Crear un archivo `.env` con:
 
 ```env
 AUTHENTICATION_API_KEY=tu_api_key_de_evolution
+GEMINI_API_KEY=tu_api_key_de_gemini
+PORT=3000
 ```
 
 ## 📋 Contenido por Clase
@@ -77,10 +80,38 @@ AUTHENTICATION_API_KEY=tu_api_key_de_evolution
 - Configuración de respuestas automáticas
 - Manejo de errores y logging
 
+### Clase 3: Integración con Google Gemini AI y arquitectura modular
+- Integración con Google Gemini AI para respuestas inteligentes
+- Refactorización del código en arquitectura modular (controllers/utils)
+- Implementación del servicio de IA con instrucciones del sistema
+- Manejo de errores mejorado para la IA
+- Separación de responsabilidades en diferentes módulos
+
+### Clase 4: Sistema de comandos avanzado y tipos de usuario
+- Implementación de sistema de comandos con `/`
+- Diferenciación entre usuarios admin y usuarios normales
+- Comandos específicos por tipo de usuario
+- Sistema de permisos básico
+- Validación y ejecución de comandos
+
+### Clase 5: Modos de conversación y envío de medios
+- Implementación de modos de conversación (general, soporte, ventas)
+- Sistema de cambio de modo por comando
+- Envío de archivos y documentos
+- Instrucciones del sistema personalizadas por modo y tipo de usuario
+- Persistencia temporal de estados de usuario
+
 #### Funcionalidades implementadas:
 - ✅ Servidor Express funcionando en puerto 3000
 - ✅ Webhook para recibir mensajes de WhatsApp
-- ✅ Respuesta automática a mensajes recibidos
+- ✅ Integración completa con Google Gemini AI
+- ✅ Sistema de comandos avanzado (/help, /info, /manual, etc.)
+- ✅ Diferenciación de tipos de usuario (admin/user)
+- ✅ Modos de conversación (general, soporte, ventas)
+- ✅ Envío de texto, documentos y medios
+- ✅ Instrucciones del sistema personalizadas
+- ✅ Arquitectura modular y escalable
+- ✅ Manejo de errores robusto
 - ✅ Logging de mensajes con Morgan
 - ✅ Configuración con variables de entorno
 
@@ -90,17 +121,48 @@ AUTHENTICATION_API_KEY=tu_api_key_de_evolution
 
 ```
 whatsbots/
-├── app.js              # Servidor principal con webhook
-├── docker-compose.yml  # Configuración de Docker
-├── package.json        # Dependencias del proyecto
-├── .env               # Variables de entorno (no incluido en git)
-└── README.md          # Documentación del proyecto
+├── app.js                    # Servidor principal
+├── controllers/              # Controladores de la aplicación
+│   └── messageController.js  # Controlador principal de mensajes
+├── utils/                    # Utilidades y servicios
+│   ├── geminiResponse.js     # Servicio de Google Gemini AI
+│   └── messageUtils.js       # Utilidades para manejo de mensajes
+├── docker-compose.yml        # Configuración de Docker
+├── package.json             # Dependencias del proyecto
+├── .env                     # Variables de entorno (no incluido en git)
+├── .env.example             # Ejemplo de variables de entorno
+├── .gitignore              # Archivos ignorados por Git
+└── README.md               # Documentación del proyecto
 ```
 
 ### API Endpoints
 
 - `GET /` - Endpoint de prueba que retorna "Hola"
-- `POST /webhook` - Recibe eventos de Evolution API
+- `POST /webhook` - Recibe eventos de Evolution API y procesa mensajes con IA
+
+### Comandos Disponibles
+
+#### Comandos para Usuarios:
+- `/help` - Muestra la lista de comandos disponibles
+- `/info` - Información sobre el bot
+- `/manual` - Descarga el manual de usuario (PDF)
+- `/modo_soporte` - Activa el modo soporte técnico
+- `/modo_ventas` - Activa el modo ventas
+- `/modo_general` - Activa el modo general
+
+#### Comandos Adicionales para Admins:
+- `/usuarios` - Gestión de usuarios (solo admins)
+
+### Modos de Conversación
+
+- **Modo General**: Conversación estándar con respuestas generales
+- **Modo Soporte**: Especializado en resolución de problemas técnicos
+- **Modo Ventas**: Enfocado en productos, precios y decisiones de compra
+
+### Tipos de Usuario
+
+- **Usuario Normal**: Acceso a comandos básicos y funcionalidades estándar
+- **Admin**: Acceso completo a todos los comandos y funcionalidades avanzadas
 
 ## 🎓 Instructor
 - **Iván Martínez** - Desarrollador Full Stack y experto en integración de APIs
